@@ -70,3 +70,30 @@ const aar = ["a","b"];
 const bar = ["a","b","c"];
 const car = [...aar,...bar];   //...을 붙이면 축소 시켜 보여줄수 있다
 console.log(car);
+
+
+//비동기 - 여러 작업을 동시에 실행시킨다 
+function taskA(a,b,cb){
+    setTimeout(() =>{
+        const res = a+b;
+        cb(res)
+    },2000);    //2 초 뒤에 작업 수행 
+}
+
+taskA(1,2,(res) =>{
+    console.log(res);
+});        // taskA의 작업이 끝날때까지 출력창은 동작하지 않는다 -> 동기처리
+console.log("코드끝")   //먼저 지시된 작업 전에 다른 작업 실행 -> 비동기 
+
+function taskB(a,cb){   // taskA보다 먼저 실행된다. 1초만 기다리기 때문 
+    setTimeout(()=>{
+        const res = a*2;
+        cb(res);
+    },1000);
+}
+
+taskB(7,(res)=>{    //콜백함수 - 다른 함수의 매개변수로 전달되는 함수
+    console.log(res);
+})
+
+ 
