@@ -1,3 +1,5 @@
+//변수 ~ 객체등
+
 
 //변수설정
 let age = 25;       // var 대신 let 사용 
@@ -112,3 +114,5 @@ console.log(n);
 
 
 console.log(chars.join(","))    //인덱스 사이에 , 추가
+
+ 

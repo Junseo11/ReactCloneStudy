@@ -1,3 +1,5 @@
+//객체 ~ promise 등 
+
 // 3항연산자
 let a =3; 
 a >= 0 ? console.log("양수") : console.log("음수");  
@@ -96,4 +98,92 @@ taskB(7,(res)=>{    //콜백함수 - 다른 함수의 매개변수로 전달되�
     console.log(res);
 })
 
+
+//promise 객체 - 줄지은 콜백을 해결 
+function isPos(num, resolve, reject){   //콜백함수를 통해 각 함수 불러온다 
+    setTimeout(()=>{
+        if(typeof num === "number"){
+            resolve(num >= 0 ? "양수" : "음수");
+        }
+        else{
+            reject("숫자형 값 x");
+
+        }
+    },2000);
+}
+
+isPos('a',(res)=>{          // 콜백 함수 성공 함수와 실패 함수를 인수로 전달 
+    console.log("성공적으로 수행됨 :",res)
+},
+(err)=>{
+    console.log("실패 : ",err)
+});
  
+function isPosP(num){
+    const executor = (resolve, reject) =>{      //비동기 작업을 실질적으로 실행하는 함수
+        setTimeout(()=>{
+            if(typeof num === "number"){
+                resolve(num >= 0 ? "양수" : "음수");
+            }
+            else{
+                reject("숫자형 값 x");
+            }
+        },2000); 
+    };
+
+    const asyncTask = new Promise(executor); // executor을 실행 priomise 객체로 생성하고 호출하면 executor 가 바로 수행된다  
+    return asyncTask;   //promise 반환 
+}
+ 
+const res = isPosP([]);     //executer의 결과값 사용가능 
+res     //promise 객체 반환받아서 사용한다 
+.then((res)=>{console.log("작업성공:",res); //resolve 받아온다 
+})
+.catch((err)=>{ // reject 받아온다
+    console.log("작업실패",err) 
+});
+
+
+function tA(a,b){
+    const executorA = (resolve, reject) =>{
+        setTimeout(()=>{
+            const res = a+b;
+            resolve(res);
+        },3000);
+    }
+    const sync = new Promise(executorA);
+    return sync;
+}
+
+function tB(a){
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            const res = a+1;
+            resolve(res);
+        },1000)
+    });
+
+}
+
+function tC(a){
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            const res = a*2;
+            resolve(res);
+        },2000);
+    });
+
+}
+
+tA(5,1).then((ares)=>{
+    console.log("res:",ares);
+    tB(ares).then((bres)=>{
+        console.log("resb:",bres);
+        tC(bres).then((cres)=>{
+            console.log("resc",cres);
+        })
+    })
+})
+
+
+
