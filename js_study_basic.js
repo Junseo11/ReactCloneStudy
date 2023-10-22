@@ -109,6 +109,7 @@ const compare = (a,b) =>{
     }
 };
 
+
 n.sort(compare);
 console.log(n);
 
