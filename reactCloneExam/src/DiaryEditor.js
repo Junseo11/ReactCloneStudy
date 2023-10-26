@@ -1,6 +1,6 @@
 import { useRef,useState } from "react";
 
-const DiaryEditorr = ()=>{
+const DiaryEditor = ()=>{
 
     const authorInput = useRef();
     const contentInput = useRef();
@@ -70,4 +70,4 @@ const DiaryEditorr = ()=>{
 
     );
 };
-export default DiaryEditorr;
+export default DiaryEditor;
