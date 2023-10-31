@@ -1,7 +1,7 @@
 import List from "./list";
 
 
-const DiaryList = ({diaryList}) =>{
+const DiaryList = ({diaryList,onDelete,onEdit}) =>{
 
     return (
         <div className="DiaryList">
@@ -9,7 +9,7 @@ const DiaryList = ({diaryList}) =>{
             <h4>{diaryList.length} 개의 일기가 있습니다.</h4>
             <div>
                 {diaryList.map((it)=>(
-                    <List key={it.id} {...it}/>
+                    <List onEdit={onEdit} onDelete={onDelete}  key={it.id} {...it}/>
                     
                 ))}
             </div>

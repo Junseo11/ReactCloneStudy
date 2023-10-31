@@ -1,8 +1,8 @@
 import React, {useState} from "react"; 
 import OddEvenResult from "./OddEvenResult";
 
-const Counter = ({initialValue}) =>{
-    const [count,setCount] = useState(initialValue);   
+const Counter = ({a}) =>{
+    const [count,setCount] = useState(a);   
     const onIncrease = () =>{
         setCount(count +1);
     };

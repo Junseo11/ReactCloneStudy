@@ -1,38 +1,48 @@
 
+import { useRef, useState } from 'react';
 import './App.css';
 import DiaryEditorr from './DiaryEditor';
 import DiaryList from './DiaryList';
+import Lifecycle from './lifecycle';
 
-const dummylist =[
-  {
-    id: 1,
-    author: "q",
-    content : "하이 1",
-    emotion:1,
-    created_data: new Date().getTime()
-  },
-  {
-    id: 2,
-    author: "w",
-    content : "하이 2",
-    emotion:2,
-    created_data: new Date().getTime()
-  },
-  {
-    id: 3,
-    author: "e",
-    content : "하이 3",
-    emotion:3,
-    created_data: new Date().getTime()
-  }
-
-]
 
 function App() {
+
+  const [data,setData] = useState([]);
+
+  const deaId = useRef(0);
+
+  const onCreate = (author, content, emotion) =>{
+    const created_data = new Date().getTime;
+    const newItem = {
+      author,
+      content,
+      emotion,
+      created_data,
+      id : deaId.current
+    };
+    deaId.current+= 1;      
+    setData([newItem, ...data]);
+  };
+
+  const onEdit = (targetId,newcontent) =>{
+    setData(
+      data.map((it)=>
+        it.id === targetId ? {...it,content : newcontent} : it  ));
+  };
+
+
+  const onDelete = (targetId) =>{
+    const newDataList = data.filter((it)=>it.id!=targetId);
+    setData(newDataList);
+    console.log(`${targetId}가 삭제되었습니다`);
+  }
+
   return (
     <div className="App">
-      <DiaryEditorr/>
-      <DiaryList diaryList={dummylist}/>
+      <Lifecycle/>
+      <DiaryEditorr onCreate={onCreate} />
+      <DiaryList onDelete={onDelete} diaryList={data} onEdit = {onEdit}/>
     </div>
   );
 }

@@ -1,5 +1,37 @@
+import { useRef, useState } from "react";
 
-const List = ({author,content,emotion,created_data}) =>{
+const List = ({id,author,content,emotion,created_data,onDelete,onEdit}) =>{
+
+    const[isEdit, setIsEdit] = useState(false);
+    const toggleIsEdit = () => setIsEdit(!isEdit);
+    const [localcontent, setLocalContent] = useState(content);
+
+    const handleRemov = () =>{
+        if(window.confirm(`${id}번째 데이터 진짜 삭제?`)){
+            onDelete(id);
+        }
+    }
+
+    const quitEdit = () =>{
+        setIsEdit(false);
+        setLocalContent(content);
+    }
+
+    const localcontentRef = useRef();
+
+    const handleEdit = () =>{
+        if(localcontent.length<5){
+            localcontentRef.current.focus();  // ref를 사용해 현재 ref가 가르키고 있는 dom구조를 focus 한다
+            return;
+        }
+
+        if(window.confirm(`${id}번째 일기를 수정하시겠습니까?`)){
+            onEdit(id,localcontent);
+            toggleIsEdit();
+        }
+      
+    }
+
     return(
         <div className="Item">
             <span className="info">
@@ -7,7 +39,26 @@ const List = ({author,content,emotion,created_data}) =>{
             </span>
             <span className="date">{new Date(created_data).toLocaleString()} </span>
             <br/><br/>
-            <span className="content"> {content}</span>
+            <div className="content">
+                {isEdit ? (
+                    <>
+                        <textarea
+                        ref={localcontentRef}
+                            value={localcontent}
+                            onChange={(e)=>setLocalContent(e.target.value)}
+                        ></textarea>
+                        
+                        <button onClick={quitEdit}>수정취소</button>
+                        <button onClick={handleEdit}>수정완료</button>
+                    </>
+                ):(
+                    <>{content}
+                        <button onClick={handleRemov}>삭제하기</button>
+                        <button onClick={toggleIsEdit}>수정하기</button>
+                    </>
+                )}
+            
+            </div>
         </div>
     );
 }
