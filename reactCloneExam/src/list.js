@@ -1,10 +1,18 @@
-import { useRef, useState } from "react";
+import React,{ useEffect, useRef, useState,useContext} from "react";
+import { DiaryContext,stateContext } from "./App";
 
-const List = ({id,author,content,emotion,created_data,onDelete,onEdit}) =>{
+const List = ({id,author,content,emotion,created_data}) =>{
+
+    const {onDelete} = useContext(stateContext);
+    const {onEdit} = useContext(stateContext);
 
     const[isEdit, setIsEdit] = useState(false);
-    const toggleIsEdit = () => setIsEdit(!isEdit);
+    const toggleIsEdit = () => setIsEdit(!isEdit);  
     const [localcontent, setLocalContent] = useState(content);
+
+    useEffect(()=>{
+        console.log(`${id}번째 아이템 랜더`);
+    })
 
     const handleRemov = () =>{
         if(window.confirm(`${id}번째 데이터 진짜 삭제?`)){
@@ -39,6 +47,7 @@ const List = ({id,author,content,emotion,created_data,onDelete,onEdit}) =>{
             </span>
             <span className="date">{new Date(created_data).toLocaleString()} </span>
             <br/><br/>
+            
             <div className="content">
                 {isEdit ? (
                     <>
@@ -63,4 +72,4 @@ const List = ({id,author,content,emotion,created_data,onDelete,onEdit}) =>{
     );
 }
 
-export default List;
+export default React.memo(List);

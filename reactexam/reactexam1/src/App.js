@@ -1,56 +1,66 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import './App.css';
 import Container from './Container';
-import Counter from './Counter';
-import Ex from './Ex';
+import DiaryEditor from './DiaryEditor';
+import DiaryList from './DiaryList';
+
 
 
 function App() {
 
-  const dummylist =[
-    {
-      id: 1,
-      author: "q",
-      content : "하이 1",
-      emotion:1,
-      created_data: new Date().getTime()
-    },
-    {
-      id: 2,
-      author: "w",
-      content : "하이 2",
-      emotion:2,
-      created_data: new Date().getTime()
-    },
-    {
-      id: 3,
-      author: "e",
-      content : "하이 3",
-      emotion:3,
-      created_data: new Date().getTime()
-    }
-  
-  ]
+  const deaId = useRef(0);
 
-  const couterprop = {
-    a:1,
-    b:2,
-    c:3,
-    d:4,
-    initialValue: 5,
+  const [data, setData] = useState([]);
+
+  const getData = async ()=>{
+    const res= await fetch("https://jsonplaceholder.typicode.com/comments")
+    .then((res)=>res.json());
+
+    const initData = res.slice(0,20).map((it)=>{
+      return{
+        author : it.email,
+        text : it.body,
+        emotion : Math.floor(Math.random()*5)+1,
+        create_date : new Date().getTime(),
+        id : deaId.current ++
+      }
+    });
+    setData(initData);
   };
 
+
+  
+  const onCreate = useCallback((author, text, emotion)=>{
+    const create_date = new Date().getTime();
+    const newItem = {
+      author: author,
+      text: text,
+      emotion: emotion,
+      create_date,
+      id: deaId.current
+    };
+    deaId.current ++
+    setData((data)=>[newItem, ...data]);
+  },[]);
+
+
+  useEffect(()=>{
+    getData();
+  },[]);
+
+  const onDelete =useCallback((Id)=>{
+    setData((data)=> data.filter((it)=>it.id !== Id));
+  },[]);
+
+  const onEdit = useCallback((targetId, newContent)=>{
+    setData((data)=>data.map((it)=>it.id === targetId ? {...it,text : newContent} : it))
+  },[]);
+
   return (
-    <Container>
-    <div>
-      <Counter {...couterprop} /> 
+    <div className="App">
+      <DiaryEditor onCreate ={onCreate}/>
+      <DiaryList onDelete={onDelete} onEdit={onEdit} data={data}/>
     </div>
-
-
-    <h2>계산기 예제 만들기</h2>
-    <p>input으로 숫자 입력 버튼 클릭하면 결과 리스트로 반환</p>
-      <Ex a={100} list={dummylist} {...couterprop}  />
-
-    </Container>
   );
 }
 
