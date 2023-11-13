@@ -1,10 +1,9 @@
+import DiaryEdior from "../components/DiaryEditor";
+
 
 const New =()=>{
-    return(
-        <div>
-            <h2>이곳은 뉴입니다</h2>
-        </div>
-    );
+
+    return <div> <DiaryEdior/></div>
 };
 
 export default New;
