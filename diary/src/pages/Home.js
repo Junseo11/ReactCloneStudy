@@ -1,4 +1,4 @@
-import { Component, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import MyHeader from '../components/MyHeader';
 import MyButton from '../components/MyButton';
@@ -8,6 +8,11 @@ import { DiaryStateContext } from "../App";
 import DiaryList from "../components/DiaryList";
 
 const Home =()=>{
+
+    useEffect(()=>{
+        const titleEle = document.getElementsByTagName("title")[0];
+        titleEle.innerHTML = `감성 일기장`;
+    },[]);
 
     const diaryList = useContext(DiaryStateContext);
 
@@ -37,7 +42,11 @@ const Home =()=>{
         const lastDay = new Date(
             curDate.getFullYear(),
             curDate.getMonth()+1,
-            0
+            0,
+            23,
+            59,
+            59
+    
         ).getTime();
 
         setData(diaryList.filter((it)=> firstDay<= it.date && it.date<=lastDay));

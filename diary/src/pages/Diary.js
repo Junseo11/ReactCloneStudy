@@ -15,6 +15,11 @@ const Diary =()=>{
     const [originDiary, setOriginDiary] = useState();
 
     useEffect(()=>{
+        const titleEle = document.getElementsByTagName("title")[0];
+        titleEle.innerHTML = `감성 일기장 - ${id}번째 일기`;
+    },[])
+
+    useEffect(()=>{
         const targetDiary = diarylist.find((it)=> parseInt(it.id) === parseInt(id));
 
         if(targetDiary){

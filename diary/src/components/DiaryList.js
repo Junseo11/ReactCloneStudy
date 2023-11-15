@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 import DiaryItem from "./DiaryItem";
@@ -15,7 +15,7 @@ const filterList =[
 ];
 
 
-const SortOption = ({value, onChange, optionList})=>{
+const SortOption = React.memo(({value, onChange, optionList})=>{
     return(
         <select className="SortOption" value={value} onChange={(e)=>onChange(e.target.value)}>
             {optionList.map((it,idx)=>{
@@ -23,10 +23,11 @@ const SortOption = ({value, onChange, optionList})=>{
             })}
         </select>
     );
-};
+});
 
 
 const DiaryList =({diaryList}) =>{      // 필터를 거쳐 가지고 있는 리스트 
+
 
     const [option, setOption] = useState('latest');
     const [filter, setFilter] = useState('all');
@@ -67,7 +68,7 @@ const DiaryList =({diaryList}) =>{      // 필터를 거쳐 가지고 있는 리
                     <SortOption value={option} onChange={setOption} optionList={optionList} />
                     <SortOption value={filter} onChange={setFilter} optionList={filterList}/>
                 </div>
-                <div className="right_col">
+                <div className="ri  ght_col">
                     <MyButton text={"작성페이지로 이동"} type={'positive'} onClick={()=>navigate("./New")}/>
                 </div>
             </div>

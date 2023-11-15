@@ -12,6 +12,12 @@ const Edit =()=>{
     const [originData, setOriginData] = useState();
 
     useEffect(()=>{
+        const titleEle = document.getElementsByTagName("title")[0];
+        titleEle.innerHTML = `감성 일기장 - ${id}번째 일기 수정`;
+    },[])
+
+
+    useEffect(()=>{
         const targetDiary = diaryList.find((it)=> parseInt(it.id) === parseInt(id));
 
         if(targetDiary){
